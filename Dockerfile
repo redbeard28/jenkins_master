@@ -3,7 +3,7 @@ FROM jenkins/jenkins:lts
 MAINTAINER redbeard28 <https://github.com/redbeard28/docker_mkdocs>
 
 USER root
-ENV DOCKER_GID
+ARG DOCKER_GID
 
 RUN apt-get update && \
     apt-get -y install apt-transport-https \
