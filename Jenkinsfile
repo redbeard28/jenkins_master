@@ -29,11 +29,12 @@ pipeline {
                     input message:'Approuve Image Building'
                 }
             }*/
+
             steps{
                 script {
                     /* Prepare build command */
                     def image = docker.build("redbeard28/jenkins_master:${TAG}")
-                    def imageArgs = image.run("--build-arg DOCKER_GID=${DOCKER_GID}")
+                    def imageArgs = image.build("--build-arg DOCKER_GID=${DOCKER_GID}")
 
                     /* login to the registry and push */
                     withDockerRegistry([credentialsId: 'DOCKERHUB', url: "https://index.docker.io/v1/"]) {
@@ -42,7 +43,6 @@ pipeline {
 
                     }
                 }
-
             }
         }
     }
