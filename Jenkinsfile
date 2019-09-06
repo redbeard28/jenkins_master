@@ -38,7 +38,7 @@ pipeline {
                     /* login to the registry and push */
                     withDockerRegistry([credentialsId: 'DOCKERHUB', url: "https://index.docker.io/v1/"]) {
 
-                        imageArgs.push()
+                        image.push()
 
                     }
                 }
