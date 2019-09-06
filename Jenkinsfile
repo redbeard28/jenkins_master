@@ -1,6 +1,6 @@
-# Created by Jeremie CUADRADO
-# Under GNU AFFERO GENERAL PUBLIC LICENSE
-#
+/* Created by Jeremie CUADRADO
+ Under GNU AFFERO GENERAL PUBLIC LICENSE
+*/
 
 pipeline {
     agent any
