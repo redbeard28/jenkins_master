@@ -5,6 +5,8 @@ MAINTAINER redbeard28 <https://github.com/redbeard28/jenkins_master.git>
 USER root
 ARG DOCKER_GID
 
+
+
 RUN apt-get update && \
     apt-get -y install apt-transport-https \
         ca-certificates \
@@ -17,8 +19,9 @@ RUN apt-get update && \
         $(lsb_release -cs) \
         stable" && \
     apt-get update && \
-apt-get -y install docker-ce
-RUN apt-get install -y docker-ce
-RUN usermod -a -G docker jenkins && \
-    groupmod -g $DOCKER_GID docker
+    apt-get -y install docker-ce
+
+RUN usermod -a -G docker jenkins
+RUN groupmod -g $DOCKER_GID docker
+
 USER jenkins
