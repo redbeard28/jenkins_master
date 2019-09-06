@@ -31,13 +31,15 @@ pipeline {
             }*/
             steps{
                 script {
-                    /* def customImage = docker.build("redbeard28/jenkins_slave:${TAG}")
-                    customImage.push() */
+                    /* Prepare build command */
+                    def image = docker.build("redbeard28/jenkins_master:${TAG}")
+                    def imageArgs = image.run("--build-arg DOCKER_GID=${DOCKER_GID}")
+
+                    /* login to the registry and push */
                     withDockerRegistry([credentialsId: 'DOCKERHUB', url: "https://index.docker.io/v1/"]) {
-                        //def image = docker.builddef image = docker.build("redbeard28/jenkins_slave:${TAG}","--build-arg 'DOCKER_GID=${DOCKER_GID}'")/jenkins_slave:${TAG}","--build-arg 'DOCKER_GID=${DOCKER_GID}'")
-                        sh """
-                          docker build --build-arg 'DOCKER_GID=${DOCKER_GID}' -t redbeard28/jenkins_slave:${TAG} .
-                        """
+
+                        imageArgs.push()
+
                     }
                 }
 
@@ -45,3 +47,16 @@ pipeline {
         }
     }
 }
+/*
+   dbImage = docker.build('oracle', 'docker/oracle')
+   db = dbImage.run("-p 49160:22 -p 49161:1521")
+   wlpImage = docker.build('liberty', 'docker/liberty')
+   wlp = wlpImage.run("-p 9080:9080 --link=${db.id}:oracle")
+  }
+  stage('Push image to registry') {
+      docker.withRegistry('https://localhost:5000') {
+          dbImage.push()
+          wlpImage.push()
+      }
+     }
+*/
