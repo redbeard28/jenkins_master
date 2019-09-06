@@ -1,6 +1,6 @@
 FROM jenkins/jenkins:lts
 
-MAINTAINER redbeard28 <https://github.com/redbeard28/docker_mkdocs>
+MAINTAINER redbeard28 <https://github.com/redbeard28/jenkins_master.git>
 
 USER root
 ARG DOCKER_GID
