@@ -34,7 +34,7 @@ pipeline {
                     /* def customImage = docker.build("redbeard28/jenkins_slave:${TAG}")
                     customImage.push() */
                     withDockerRegistry([credentialsId: 'DOCKERHUB', url: "https://index.docker.io/v1/"]) {
-                        def image = docker.build("redbeard28/jenkins_slave:${TAG}","--build-arg '$DOCKER_GID'")
+                        def image = docker.build("redbeard28/jenkins_slave:${TAG}","--build-arg DOCKER_GID='$DOCKER_GID'")
                     image.push()
                     }
                 }
