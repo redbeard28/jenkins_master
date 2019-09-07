@@ -36,7 +36,7 @@ pipeline {
                         /* login to the registry and push */
                         withDockerRegistry([credentialsId: 'DOCKERHUB', url: "https://index.docker.io/v1/"]) {
                             /* Prepare build command */
-                            def image = docker.build("redbeard28/jenkins_master:${TAG}","--build-arg DOCKER_GID=${DOCKER_GID} -f Dockerfile .")
+                            def image = docker.build("redbeard28/jenkins_slave:${TAG}","--build-arg DOCKER_GID=${DOCKER_GID} -f Dockerfile .")
 
                             image.push()
 
