@@ -3,7 +3,7 @@
 */
 
 pipeline {
-
+    agent { label DOCKER_NODE }
     environment {
         DOCKER_NODE = ''
         branchVName = 'master'
