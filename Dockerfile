@@ -21,6 +21,11 @@ RUN apt-get update && \
     apt-get update && \
     apt-get -y install docker-ce
 
+RUN echo "deb http://ppa.launchpad.net/ansible/ansible/ubuntu trusty main" >> /etc/apt/sources.list && \
+    sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 93C4A3FD7BB9C367 && \
+    sudo apt update && \
+    sudo apt -y install ansible
+
 RUN usermod -a -G docker jenkins
 RUN groupmod -g $DOCKER_GID docker
 
