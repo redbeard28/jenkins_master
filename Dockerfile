@@ -4,8 +4,10 @@ MAINTAINER redbeard28 <https://github.com/redbeard28/jenkins_master.git>
 
 USER root
 ARG DOCKER_GID
+ARG DOCKER_TCPIP
 
 
+COPY plugins.txt /
 
 RUN apt-get update && \
     apt-get -y install rsync apt-transport-https \
@@ -26,7 +28,12 @@ RUN echo "deb http://ppa.launchpad.net/ansible/ansible/ubuntu trusty main" >> /e
     sudo apt update && \
     sudo apt -y install ansible
 
+RUN curl -fsSL -o /install-plugins.sh https://raw.githubusercontent.com/jenkinsci/docker/master/install-plugins.sh -o / && \
+    chmod 755 /install-plugins.sh && \
+    /bin/bash /install-plugins.sh < /plugins.txt
+
 RUN usermod -a -G docker jenkins
 RUN groupmod -g $DOCKER_GID docker
 
 USER jenkins
+
