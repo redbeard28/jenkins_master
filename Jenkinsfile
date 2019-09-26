@@ -27,16 +27,17 @@ pipeline {
                     input message:'Approuve Image Building'
                 }
             }*/
+            steps{
+                /* Remove old images */
+                sh """
+                    ssh root@`echo ${DOCKER_TCPIP} |awk -F ':' '{ print $1 }'` "docker rmi $(docker images | grep 'jenkins' | awk {'print $3'})"
+                """
+            }
 
             steps{
                 script {
                     withDockerServer([uri: "tcp://${DOCKER_TCPIP}"]) {
                         /* login to the registry and push */
-                        steps{
-                            sh """
-                                docker rmi $(docker images | grep 'jenkins' | awk {'print $3'})
-                            """
-                         }
                         withDockerRegistry([credentialsId: 'DOCKERHUB', url: "https://index.docker.io/v1/"]) {
                             /* Prepare build command */
                             def image = docker.build("redbeard28/jenkins_slave:${TAG}","--build-arg DOCKER_GID=${DOCKER_GID} -f Dockerfile .")
