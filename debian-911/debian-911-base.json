@@ -1,0 +1,75 @@
+{
+  "builders": [{
+    "name": "debian-911-net",
+    "vm_name": "debian-911-net",
+    "type": "vmware-iso",
+    "guest_os_type": "debian9-64",
+    "tools_upload_flavor": "linux",
+    "headless": false,
+
+    "iso_urls": [
+        "ISO/debian-9.11.0-amd64-netinst.iso",
+        "https://cdimage.debian.org/mirror/cdimage/archive/9.11.0/amd64/iso-cd/debian-9.11.0-amd64-netinst.iso"
+      ],
+
+    "iso_checksum": "9ae83aa5a732151ef2dc84538d1d4ffd6374df47cc01681da6348f9ec5a45bd4",
+    "iso_checksum_type": "sha256",
+
+    "ssh_username": "debian",
+    "ssh_password": "debian",
+    "ssh_port": 22,
+    "ssh_timeout": "20m",
+
+    "disk_type_id": "thin",
+    
+    "format": "ovf",
+    
+    "ovftool_options": [
+	"--allowExtraConfig",
+	"--noSSLVerify"
+    ],
+
+    "floppy_files": [
+      "preseed/debian911.cfg"
+    ],
+
+    "boot_command": [
+        "<esc><wait>",
+        "install <wait>",
+        " preseed/url=https://cheatsheets.redbeard-consulting.fr/feeds/debian911.cfg <wait>",
+        "debian-installer=en_US.UTF-8 <wait>",
+        "auto <wait>",
+        "locale=en_US.UTF-8 <wait>",
+        "kbd-chooser/method=us <wait>",
+        "keyboard-configuration/xkb-keymap=us <wait>",
+        "netcfg/get_hostname={{ .Name }} <wait>",
+        "netcfg/get_domain=vagrantup.com <wait>",
+        "fb=false <wait>",
+        "debconf/frontend=noninteractive <wait>",
+        "console-setup/ask_detect=false <wait>",
+        "console-keymaps-at/keymap=us <wait>",
+        "grub-installer/bootdev=/dev/sda <wait>",
+        "<enter><wait>"
+      ],
+
+    "shutdown_command": "echo 'shutdown -P now' > shutdown.sh; echo 'debian'|sudo -S sh 'shutdown.sh'",
+    "vnc_disable_password": "true",
+
+    "remote_type": "esx5",
+    "remote_host": "{{user `esxi_host`}}",
+    "remote_datastore": "{{user `esxi_datastore`}}",
+    "remote_username": "{{user `esxi_username`}}",
+    "remote_password": "{{user `esxi_password`}}",
+    "keep_registered": true,
+
+    "vmx_data": {
+      "ethernet0.networkName": "VM Network"
+    }
+  }],
+  "provisioners": [
+      {
+        "type": "shell",
+        "inline": ["echo 'template build complete'"]
+      }
+    ]
+}
