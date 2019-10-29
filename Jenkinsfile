@@ -1,17 +1,17 @@
 /* Created by Jeremie CUADRADO
  Under GNU AFFERO GENERAL PUBLIC LICENSE
 */
-/*def remote = [:]
+def remote = [:]
 remote.name = "node4"
 remote.host = "10.10.1.214"
 remote.allowAnyHosts = true
-*/
+
 
 pipeline {
     agent { label DOCKER_NODE }
     environment {
         branchVName = 'master'
-        TAG = '${ TAG }'
+        TAG = "${ TAG }"
         DOCKER_GID = '998'
     }
 
