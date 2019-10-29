@@ -1,12 +1,16 @@
 /* Created by Jeremie CUADRADO
  Under GNU AFFERO GENERAL PUBLIC LICENSE
 */
+def remote = [:]
+remote.name = "node4"
+remote.host = "10.10.1.214"
+remote.allowAnyHosts = true
 
 pipeline {
     agent { label DOCKER_NODE }
     environment {
         branchVName = 'master'
-        TAG = '0.5'
+        TAG = '${ TAG }'
         DOCKER_GID = '998'
     }
 
@@ -27,15 +31,21 @@ pipeline {
                     input message:'Approuve Image Building'
                 }
             }*/
-            steps{
-                /* Remove old images */
-                sh """
-                    ssh root@`echo ${DOCKER_TCPIP} |awk -F ':' '{ print $1 }'` "docker rmi $(docker images | grep 'jenkins' | awk {'print $3'})"
-                """
-            }
 
-            steps{
+            /*steps{
                 script {
+                    withCredentials([usernamePassword(credentialsId: 'SSH_ROOT_PW', passwordVariable: 'password', usernameVariable: 'userName')]) {
+                       steps{
+                            remote.user = userName
+                            remote.password = password
+                            sshCommand remote: remote, command: 'docker rmi $(docker images | grep jenkins | awk {'print $3'})'
+
+                       }
+                    }
+                 }
+             }*/
+             steps{
+                script{
                     withDockerServer([uri: "tcp://${DOCKER_TCPIP}"]) {
                         /* login to the registry and push */
                         withDockerRegistry([credentialsId: 'DOCKERHUB', url: "https://index.docker.io/v1/"]) {
