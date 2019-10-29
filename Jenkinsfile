@@ -1,10 +1,11 @@
 /* Created by Jeremie CUADRADO
  Under GNU AFFERO GENERAL PUBLIC LICENSE
 */
-def remote = [:]
+/*def remote = [:]
 remote.name = "node4"
 remote.host = "10.10.1.214"
 remote.allowAnyHosts = true
+*/
 
 pipeline {
     agent { label DOCKER_NODE }
@@ -50,7 +51,7 @@ pipeline {
                         /* login to the registry and push */
                         withDockerRegistry([credentialsId: 'DOCKERHUB', url: "https://index.docker.io/v1/"]) {
                             /* Prepare build command */
-                            def image = docker.build("redbeard28/jenkins_slave:${TAG}","--build-arg DOCKER_GID=${DOCKER_GID} -f Dockerfile .")
+                            def image = docker.build("redbeard28/jenkins_master:${TAG}","--build-arg DOCKER_GID=${DOCKER_GID} -f Dockerfile .")
 
                             image.push()
 
